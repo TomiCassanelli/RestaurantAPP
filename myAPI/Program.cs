@@ -16,7 +16,12 @@ builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 }));
 
 // Agrega los controladores
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // This will preserve the property name casing
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+    });
 
 // Configura Swagger si lo necesitas
 builder.Services.AddEndpointsApiExplorer();

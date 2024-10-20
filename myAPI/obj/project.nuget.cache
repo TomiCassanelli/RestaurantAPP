@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "uoq29GhUWqE=",
+  "dgSpecHash": "sPSjfzgDx9U=",
   "success": true,
-  "projectFilePath": "D:\\UNIVERSIDAD\\Cuarto_2024\\Semestre_2\\Ingenieria_de_Software_III\\Final\\RestaurantAPP\\myAPI\\myAPI.csproj",
+  "projectFilePath": "D:\\UNIVERSIDAD\\Cuarto_2024\\Semestre_2\\Ingenieria_de_Software_III\\RestaurantAPP\\myAPI\\myAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\tomas\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\tomas\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
