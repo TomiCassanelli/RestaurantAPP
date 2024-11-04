@@ -16,7 +16,7 @@
         <select name="CustomerID" #CustomerID="ngModel" [(ngModel)]="service.formData.CustomerID" class="form-control"
         [class.is-invalid]="!isValid && service.formData.CustomerID==0">
           <option value="0">-Select-</option>
-          <option *ngFor="let item of customerList" value="{{item.CustomerID}}">{{item.Name}}</option>
+          <option *ngFor="let customer of customerList" value="{{customer.CustomerID}}">{{customer.Name}}</option>
         </select>
       </div>
     </div>
@@ -59,11 +59,11 @@
         </td>
       </tr>
 
-      <tr *ngFor="let item of service.orderItems;let i=index;">
-        <td>{{item.ItemName}}</td>
+      <tr *ngFor="let item of service.selectedItems;let i=index;">
+        <td>{{item.Name}}</td>
         <td>{{item.Price}}</td>
-        <td>{{item.Quantity}}</td>
-        <td>{{item.Total}}</td>
+        <td>{{getItemQuantity(item)}}</td>
+        <td>{{getItemTotal(item)}}</td>
         <td>
           <a class="btn btn-sm btn-info text-white" (click)="AddOrEditOrderItem(i,service.formData.OrderID)"><i class="fa fa-pencil"></i></a>
           <a class="btn btn-sm btn-danger text-white ml-1" (click)="onDeleteOrderItem(item.OrderItemID,i)"><i class="fa fa-trash"></i></a>

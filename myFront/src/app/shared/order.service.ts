@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Order } from './order.model';
 import { OrderItem } from './order-item.model';
 import { environment } from 'src/environments/environment';
+import { Item } from './item.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ import { environment } from 'src/environments/environment';
 export class OrderService {
   formData: Order;
   orderItems: OrderItem[];
+  selectedItems: Item[] = [];
 
   constructor(private http: HttpClient) { }
 
