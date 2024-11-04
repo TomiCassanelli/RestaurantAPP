@@ -11,9 +11,5 @@ namespace WebAPI.Models
         public long? OrderID { get; set; }
         public int? ItemID { get; set; }
         public int? Quantity { get; set; }
-
-        // Relaciones con Order e Item
-        public required Item Item { get; set; }
-        public required Order Order { get; set; }
     }
 }

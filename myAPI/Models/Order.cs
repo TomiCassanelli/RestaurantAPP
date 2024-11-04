@@ -15,9 +15,6 @@ namespace WebAPI.Models
         [NotMapped]
         public string DeletedOrderItemIDs { get; set; } = string.Empty;
 
-        // Relación con el cliente
-        public required Customer Customer { get; set; }
-
         // Inicializamos la colección de OrderItems
         public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
@@ -26,7 +23,6 @@ namespace WebAPI.Models
         {
             OrderNo = string.Empty;
             PMethod = string.Empty;
-            Customer = new Customer { Name = "Cliente Predeterminado" }; // Asignar un valor predeterminado
         }
     }
 }
