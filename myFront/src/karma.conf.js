@@ -1,31 +1,35 @@
-// Karma configuration file, see link for more information
-// https://karma-runner.github.io/1.0/config/configuration-file.html
-
 module.exports = function (config) {
   config.set({
-    basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
-      require('karma-jasmine-html-reporter'),
-      require('karma-coverage-istanbul-reporter'),
+      require('karma-junit-reporter'),
+      require('karma-coverage'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
-    client: {
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
+    reporters: ['progress', 'junit', 'coverage'],
+    junitReporter: {
+      outputDir: 'test-results',
+      outputFile: 'test-results.xml',
+      useBrowserName: false
     },
-    coverageIstanbulReporter: {
-      dir: require('path').join(__dirname, '../coverage'),
-      reports: ['html', 'lcovonly'],
-      fixWebpackSourcePaths: true
+    coverageReporter: {
+      type: 'lcov',
+      dir: require('path').join(__dirname, './coverage'),
+      subdir: '.',
+      file: 'lcov.info'
     },
-    reporters: ['progress', 'kjhtml'],
+    preprocessors: {
+      // Añade los archivos que deseas instrumentar para la cobertura
+      'src/**/*.ts': ['coverage'], // Asegúrate de instrumentar los archivos de tu aplicación
+    },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
-    singleRun: false
+    browsers: ['ChromeHeadless'],
+    singleRun: true,
+    restartOnFileChange: true
   });
 };

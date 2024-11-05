@@ -1,29 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
-using WebAPI.Data; // Asegúrate de que tienes este espacio de nombres
-using WebAPI.Models; // This allows access to the Customer, Item, and Order classes.
+using Microsoft.EntityFrameworkCore;
+using MyAPI.Data;
+using MyAPI.Models;
 
-
-[ApiController]
-[Route("api/[controller]")]
-public class ItemController : ControllerBase
+namespace MyAPI.Controllers
 {
-    private readonly DBModel _context;
-
-    public ItemController(DBModel context)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ItemController : ControllerBase
     {
-        _context = context;
-    }
+        private readonly DBModel db;
 
-    // GET: api/Item
-    [HttpGet]
-    public ActionResult<IEnumerable<Item>> GetItems()
-    {
-        return _context.Item.ToList();
-    }
+        public ItemController(DBModel context)
+        {
+            db = context;
+        }
 
+        // GET: api/Item
+        [HttpGet]
+        public async Task<List<Item>> GetItems()
+        {
+            var items = await db.Item.ToListAsync();
+            return items;
+        }
+    }
 }

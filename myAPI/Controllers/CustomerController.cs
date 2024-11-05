@@ -1,26 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using WebAPI.Data; // Para acceder a DBModel
-using WebAPI.Models; // Para acceder a Customer
+using MyAPI.Data; // Para acceder a DBModel
+using MyAPI.Models; // Para acceder a Customer
+using Microsoft.EntityFrameworkCore;
 
-namespace WebAPI.Controllers
+namespace MyAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class CustomerController : ControllerBase
     {
-        private readonly DBModel db; // Cambiar MyDbContext a DBModel
+        private readonly DBModel db;
 
-        public CustomerController(DBModel context) // Cambiar el tipo de parámetro a DBModel
+        public CustomerController(DBModel context)
         {
             db = context;
         }
 
         // GET: api/Customer
         [HttpGet]
-        public ActionResult<IQueryable<Customer>> GetCustomers()
+        public async Task<List<Customer>> GetCustomers()
         {
-            return Ok(db.Customer);
+            var customers = await db.Customer.ToListAsync();
+            return customers;
         }
 
     }

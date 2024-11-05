@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace WebAPI.Controllers
+namespace MyAPI.Controllers
 {
-    // Cambiamos de ControllerBase a Controller
     public class HomeController : Controller
     {
         public IActionResult Index()

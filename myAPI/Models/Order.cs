@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System;
 using System.Collections.Generic;
 
-namespace WebAPI.Models
+namespace MyAPI.Models
 {
     public class Order
     {

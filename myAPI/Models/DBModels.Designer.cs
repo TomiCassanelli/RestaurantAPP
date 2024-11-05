@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'F:\profession\CodAffection\Angular 7\Web API Master Detail CRUD\project\WebAPI\WebAPI\Models\DBModels.edmx'. 
+﻿// T4 code generation is enabled for model 'F:\profession\CodAffection\Angular 7\Web API Master Detail CRUD\project\MyAPI\MyAPI\Models\DBModels.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
