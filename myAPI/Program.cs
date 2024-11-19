@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MyAPI.Data;
+using MyAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,11 @@ builder.Services.AddControllers()
 // Configura Swagger si lo necesitas
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Agrega los servicios
+builder.Services.AddScoped<OrderService>();
+builder.Services.AddScoped<CustomerService>();
+builder.Services.AddScoped<ItemService>();
 
 var app = builder.Build();
 

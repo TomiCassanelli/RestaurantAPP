@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyAPI.Data;
 using MyAPI.Models;
+using MyAPI.Services;
+
 
 namespace MyAPI.Controllers
 {
@@ -11,19 +13,20 @@ namespace MyAPI.Controllers
     [Route("api/[controller]")]
     public class ItemController : ControllerBase
     {
-        private readonly DBModel db;
+        private readonly ItemService _itemService;
 
-        public ItemController(DBModel context)
+        public ItemController(ItemService itemService)
         {
-            db = context;
+            _itemService = itemService;
         }
 
         // GET: api/Item
         [HttpGet]
-        public async Task<List<Item>> GetItems()
+        public async Task<ActionResult> GetItems()
         {
-            var items = await db.Item.ToListAsync();
-            return items;
+            var items = await _itemService.GetItemsAsync();
+            return Ok(items);
         }
+
     }
 }
