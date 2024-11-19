@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using MyAPI.Data;
-using MyAPI.Models;
+using System.Threading.Tasks;
 using MyAPI.Services;
-using MyAPI.DTOs;
 
 namespace MyAPI.Controllers
 {
@@ -12,26 +8,24 @@ namespace MyAPI.Controllers
     [Route("api/[controller]")]
     public class CustomerController : ControllerBase
     {
-        private readonly CustomerService _customerService;
+        private readonly ICustomerService _customerService;
 
-        public CustomerController(CustomerService customerService)
+        public CustomerController(ICustomerService customerService)
         {
             _customerService = customerService;
         }
 
-        // GET: api/Customer
         [HttpGet]
         public async Task<IActionResult> GetCustomers()
         {
-            var customers = await _customerService.GetAllCustomersAsync();
+            var customers = await _customerService.GetCustomers();
             return Ok(customers);
         }
 
-        // GET: api/Customer/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCustomer(int id)
         {
-            var customer = await _customerService.GetCustomerByIdAsync(id);
+            var customer = await _customerService.GetCustomer(id);
             if (customer == null) return NotFound();
 
             return Ok(customer);

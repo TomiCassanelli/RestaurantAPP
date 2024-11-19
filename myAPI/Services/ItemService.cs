@@ -9,19 +9,23 @@ using MyAPI.DTOs;
 
 namespace MyAPI.Services
 {
-    public class ItemService
+    public interface IItemService
     {
-        private readonly DBModel _dbContext;
+        Task<List<ItemDto>> GetItems();
+    }
 
-        public ItemService(DBModel dbContext)
+    public class ItemService : IItemService
+    {
+        private readonly DBModel _db;
+
+        public ItemService(DBModel db)
         {
-            _dbContext = dbContext;
+            _db = db;
         }
 
-        // Obtener todos los ítems
-        public async Task<List<ItemDto>> GetItemsAsync()
+        public async Task<List<ItemDto>> GetItems()
         {
-            return await _dbContext.Item
+            return await _db.Item
                 .Select(i => new ItemDto
                 {
                     ItemID = i.ItemID,

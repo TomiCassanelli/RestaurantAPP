@@ -1,11 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MyAPI.Data;
-using MyAPI.Models;
 using MyAPI.Services;
-
 
 namespace MyAPI.Controllers
 {
@@ -13,20 +8,18 @@ namespace MyAPI.Controllers
     [Route("api/[controller]")]
     public class ItemController : ControllerBase
     {
-        private readonly ItemService _itemService;
+        private readonly IItemService _itemService;
 
-        public ItemController(ItemService itemService)
+        public ItemController(IItemService itemService)
         {
             _itemService = itemService;
         }
 
-        // GET: api/Item
         [HttpGet]
-        public async Task<ActionResult> GetItems()
+        public async Task<IActionResult> GetItems()
         {
-            var items = await _itemService.GetItemsAsync();
+            var items = await _itemService.GetItems();
             return Ok(items);
         }
-
     }
 }

@@ -9,19 +9,24 @@ using MyAPI.DTOs;
 
 namespace MyAPI.Services
 {
-    public class CustomerService
+    public interface ICustomerService
     {
-        private readonly DBModel _dbContext;
+        Task<List<CustomerDto>> GetCustomers();
+        Task<CustomerDto?> GetCustomer(int id);
+    }
 
-        public CustomerService(DBModel dbContext)
+    public class CustomerService : ICustomerService
+    {
+        private readonly DBModel _db;
+
+        public CustomerService(DBModel db)
         {
-            _dbContext = dbContext;
+            _db = db;
         }
 
-        // Obtener todos los clientes
-        public async Task<List<CustomerDto>> GetAllCustomersAsync()
+        public async Task<List<CustomerDto>> GetCustomers()
         {
-            return await _dbContext.Customer
+            return await _db.Customer
                 .Select(c => new CustomerDto
                 {
                     CustomerID = c.CustomerID,
@@ -37,11 +42,10 @@ namespace MyAPI.Services
                 .ToListAsync();
         }
 
-        // Obtener un cliente por ID
-        public async Task<CustomerDto?> GetCustomerByIdAsync(int id)
+        public async Task<CustomerDto?> GetCustomer(int id)
         {
-            var customer = await _dbContext.Customer
-                .Include(c => c.Orders) // Incluye los pedidos si es necesario
+            var customer = await _db.Customer
+                .Include(c => c.Orders)
                 .FirstOrDefaultAsync(c => c.CustomerID == id);
 
             if (customer == null) return null;

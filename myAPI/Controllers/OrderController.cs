@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using MyAPI.Data;
-using MyAPI.Models;
+using System.Threading.Tasks;
 using MyAPI.Services;
+using MyAPI.Models;
 
 namespace MyAPI.Controllers
 {
@@ -13,9 +9,9 @@ namespace MyAPI.Controllers
     [Route("api/[controller]")]
     public class OrderController : ControllerBase
     {
-        private readonly OrderService _orderService;
+        private readonly IOrderService _orderService;
 
-        public OrderController(OrderService orderService)
+        public OrderController(IOrderService orderService)
         {
             _orderService = orderService;
         }
@@ -54,5 +50,4 @@ namespace MyAPI.Controllers
             return Ok();
         }
     }
-
 }
