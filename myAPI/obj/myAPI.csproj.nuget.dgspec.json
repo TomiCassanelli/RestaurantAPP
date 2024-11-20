@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\UNIVERSIDAD\\Cuarto_2024\\Semestre_2\\Ingenieria_de_Software_III\\RestaurantAPP\\MyAPI\\myAPI.csproj": {}
+    "D:\\UNIVERSIDAD\\Cuarto_2024\\Semestre_2\\Ingenieria_de_Software_III\\RestaurantAPP\\myAPI\\myAPI.csproj": {}
   },
   "projects": {
-    "D:\\UNIVERSIDAD\\Cuarto_2024\\Semestre_2\\Ingenieria_de_Software_III\\RestaurantAPP\\MyAPI\\myAPI.csproj": {
+    "D:\\UNIVERSIDAD\\Cuarto_2024\\Semestre_2\\Ingenieria_de_Software_III\\RestaurantAPP\\myAPI\\myAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\UNIVERSIDAD\\Cuarto_2024\\Semestre_2\\Ingenieria_de_Software_III\\RestaurantAPP\\MyAPI\\myAPI.csproj",
+        "projectUniqueName": "D:\\UNIVERSIDAD\\Cuarto_2024\\Semestre_2\\Ingenieria_de_Software_III\\RestaurantAPP\\myAPI\\myAPI.csproj",
         "projectName": "myAPI",
-        "projectPath": "D:\\UNIVERSIDAD\\Cuarto_2024\\Semestre_2\\Ingenieria_de_Software_III\\RestaurantAPP\\MyAPI\\myAPI.csproj",
+        "projectPath": "D:\\UNIVERSIDAD\\Cuarto_2024\\Semestre_2\\Ingenieria_de_Software_III\\RestaurantAPP\\myAPI\\myAPI.csproj",
         "packagesPath": "C:\\Users\\tomas\\.nuget\\packages\\",
-        "outputPath": "D:\\UNIVERSIDAD\\Cuarto_2024\\Semestre_2\\Ingenieria_de_Software_III\\RestaurantAPP\\MyAPI\\obj\\",
+        "outputPath": "D:\\UNIVERSIDAD\\Cuarto_2024\\Semestre_2\\Ingenieria_de_Software_III\\RestaurantAPP\\myAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\tomas\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -85,7 +85,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

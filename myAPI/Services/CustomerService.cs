@@ -30,14 +30,7 @@ namespace MyAPI.Services
                 .Select(c => new CustomerDto
                 {
                     CustomerID = c.CustomerID,
-                    Name = c.Name,
-                    Orders = c.Orders.Select(o => new OrderDto
-                    {
-                        OrderID = o.OrderID,
-                        OrderNo = o.OrderNo,
-                        PMethod = o.PMethod,
-                        GTotal = o.GTotal
-                    }).ToList()
+                    Name = c.Name
                 })
                 .ToListAsync();
         }
@@ -53,14 +46,7 @@ namespace MyAPI.Services
             return new CustomerDto
             {
                 CustomerID = customer.CustomerID,
-                Name = customer.Name,
-                Orders = customer.Orders.Select(o => new OrderDto
-                {
-                    OrderID = o.OrderID,
-                    OrderNo = o.OrderNo,
-                    PMethod = o.PMethod,
-                    GTotal = o.GTotal
-                }).ToList()
+                Name = customer.Name
             };
         }
     }

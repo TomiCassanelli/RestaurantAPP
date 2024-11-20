@@ -33,10 +33,17 @@ namespace MyAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostOrder(Order order)
+        public async Task<IActionResult> PostOrder(Order? order)
         {
+            if (order == null)
+                return BadRequest("Order cannot be null");
+
+            if (string.IsNullOrWhiteSpace(order.OrderNo))
+                return BadRequest("Order number is required");
+            
             var success = await _orderService.PostOrder(order);
-            if (!success) return BadRequest("Unable to save the order");
+            if (!success)
+                return BadRequest("Unable to save the order");
 
             return Ok();
         }
