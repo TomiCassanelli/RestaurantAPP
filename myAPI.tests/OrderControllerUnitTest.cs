@@ -183,6 +183,30 @@ namespace MyAPI.Tests
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
+        [Fact]
+        public async Task PostOrder_ShouldReturnOkForUpdateOrder()
+        {
+            // Arrange
+            var order = new Order
+            {
+                OrderID = 1,
+                OrderNo = "0123",
+                CustomerID = 1,
+                PMethod = "Card",
+                GTotal = 150
+            };
+
+            _mockService.Setup(s => s.PostOrder(order))
+                .ReturnsAsync(true);
+
+            // Act
+            var result = await _controller.PostOrder(order);
+
+            // Assert
+            Assert.IsType<OkResult>(result);
+            Assert.True(order.OrderID > 0);
+        }
+
         // DeleteOrder Tests
         [Fact]
         public async Task DeleteOrder_ShouldReturnOkForValidId()
