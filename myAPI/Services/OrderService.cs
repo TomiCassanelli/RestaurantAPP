@@ -33,9 +33,8 @@ namespace MyAPI.Services
 
         public async Task<object?> GetOrder(long id)
         {
-            var order = await (from a in _db.Order
-                               where a.OrderID == id
-                               select new
+            var order = await (from a in _db.Order where a.OrderID == id 
+                                select new
                                {
                                    a.OrderID,
                                    a.OrderNo,
@@ -47,9 +46,7 @@ namespace MyAPI.Services
 
             if (order == null) return null;
 
-            var orderDetails = await (from a in _db.OrderItems
-                                       join b in _db.Item on a.ItemID equals b.ItemID
-                                       where a.OrderID == id
+            var orderDetails = await (from a in _db.OrderItems join b in _db.Item on a.ItemID equals b.ItemID where a.OrderID == id
                                        select new
                                        {
                                            a.OrderID,
@@ -67,31 +64,44 @@ namespace MyAPI.Services
         public async Task<bool> PostOrder(Order order)
         {
             if (order.OrderID == 0)
+            {
+                // Asigna temporalmente el OrderID a los ítems antes de guardar
+                foreach (var item in order.OrderItems)
+                {
+                    item.OrderID = order.OrderID;
+                }
+
                 _db.Order.Add(order);
+            }
             else
+            {
                 _db.Entry(order).State = EntityState.Modified;
 
-            foreach (var item in order.OrderItems)
-            {
-                if (item.OrderItemID == 0)
-                    _db.OrderItems.Add(item);
-                else
-                    _db.Entry(item).State = EntityState.Modified;
-            }
-
-            foreach (var id in order.DeletedOrderItemIDs.Split(',').Where(x => x != ""))
-            {
-                var item = await _db.OrderItems.FindAsync(Convert.ToInt64(id));
-                if (item != null)
+                foreach (var item in order.OrderItems)
                 {
-                    _db.OrderItems.Remove(item);
+                    if (item.OrderItemID == 0)
+                        _db.OrderItems.Add(item);
+                    else
+                        _db.Entry(item).State = EntityState.Modified;
+                }
+
+                if (order.OrderID > 0)
+                {
+                    foreach (var id in order.DeletedOrderItemIDs.Split(',').Where(x => x != ""))
+                    {
+                        var item = await _db.OrderItems.FindAsync(Convert.ToInt64(id));
+                        if (item != null)
+                        {
+                            _db.OrderItems.Remove(item);
+                        }
+                    }
                 }
             }
 
             await _db.SaveChangesAsync();
             return true;
         }
-
+        
         public async Task<bool> DeleteOrder(long id)
         {
             var order = await _db.Order.Include(o => o.OrderItems)
