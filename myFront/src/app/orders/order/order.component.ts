@@ -46,6 +46,7 @@ export class OrderComponent implements OnInit {
           Price: x.Price,
         }));
       });
+
     }
     this.customerService
       .getCustomerList()
@@ -88,9 +89,17 @@ export class OrderComponent implements OnInit {
   }
 
   onDeleteOrderItem(orderItemID: number, i: number) {
-    if (orderItemID != null)
+    if (orderItemID != null) {
       this.service.formData.DeletedOrderItemIDs += orderItemID + ",";
-    this.service.orderItems.splice(i, 1);
+    }
+    // Eliminar de orderItems
+    const deletedItem = this.service.orderItems.splice(i, 1)[0];
+  
+    // Asegurarte de eliminar también de selectedItems
+    this.service.selectedItems = this.service.selectedItems.filter(
+      (item) => item.ItemID !== deletedItem.ItemID
+    );
+  
     this.updateGrandTotal();
   }
 
@@ -113,6 +122,7 @@ export class OrderComponent implements OnInit {
     }
     return 0;
   }
+  
   getItemTotal(item: Item) {
     const quantity = this.getItemQuantity(item);
     return item.Price * (quantity as number);
