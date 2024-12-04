@@ -41,7 +41,6 @@ namespace MyAPI.Services
                                    a.CustomerID,
                                    a.PMethod,
                                    a.GTotal,
-                                   DeletedOrderItemIDs = ""
                                }).FirstOrDefaultAsync();
 
             if (order == null) return null;
@@ -65,42 +64,59 @@ namespace MyAPI.Services
         {
             if (order.OrderID == 0)
             {
-                // Asigna temporalmente el OrderID a los ítems antes de guardar
-                foreach (var item in order.OrderItems)
-                {
-                    item.OrderID = order.OrderID;
-                }
-
+                // Nueva orden
                 _db.Order.Add(order);
             }
             else
             {
-                _db.Entry(order).State = EntityState.Modified;
+                // Orden existente
+                var existingOrder = await _db.Order
+                                            .Include(o => o.OrderItems)
+                                            .FirstOrDefaultAsync(o => o.OrderID == order.OrderID);
+
+                if (existingOrder == null)
+                {
+                    throw new InvalidOperationException("La orden no existe.");
+                }
+                existingOrder.OrderNo = order.OrderNo;
+                existingOrder.CustomerID = order.CustomerID;
+                existingOrder.PMethod = order.PMethod;
+                existingOrder.GTotal = order.GTotal;
+
+                var incomingOrderItemIDs = order.OrderItems.Select(oi => oi.OrderItemID).ToList();
+
+                var itemsToRemove = existingOrder.OrderItems
+                                                .Where(oi => !incomingOrderItemIDs.Contains(oi.OrderItemID))
+                                                .ToList();
+
+                foreach (var item in itemsToRemove)
+                {
+                    _db.OrderItems.Remove(item);
+                }
 
                 foreach (var item in order.OrderItems)
                 {
                     if (item.OrderItemID == 0)
-                        _db.OrderItems.Add(item);
-                    else
-                        _db.Entry(item).State = EntityState.Modified;
-                }
-
-                if (order.OrderID > 0)
-                {
-                    foreach (var id in order.DeletedOrderItemIDs.Split(',').Where(x => x != ""))
                     {
-                        var item = await _db.OrderItems.FindAsync(Convert.ToInt64(id));
-                        if (item != null)
+                        existingOrder.OrderItems.Add(item);
+                    }
+                    else
+                    {
+                        var existingItem = existingOrder.OrderItems.FirstOrDefault(oi => oi.OrderItemID == item.OrderItemID);
+                        if (existingItem != null)
                         {
-                            _db.OrderItems.Remove(item);
+                            existingItem.ItemID = item.ItemID;
+                            existingItem.Quantity = item.Quantity;
                         }
                     }
                 }
+
             }
 
             await _db.SaveChangesAsync();
             return true;
         }
+
         
         public async Task<bool> DeleteOrder(long id)
         {

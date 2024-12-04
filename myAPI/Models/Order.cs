@@ -12,9 +12,6 @@ namespace MyAPI.Models
         public required string PMethod { get; set; }
         public decimal? GTotal { get; set; }
 
-        [NotMapped]
-        public string DeletedOrderItemIDs { get; set; } = string.Empty;
-
         // Inicializamos la colección de OrderItems
         public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
