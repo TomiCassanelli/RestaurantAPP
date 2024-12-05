@@ -78,13 +78,13 @@ export class OrderItemsComponent implements OnInit, OnDestroy {
           this.selectedItem;
       }
       this.dialogRef.close();
-      this.toastr.success('Order item saved successfully!', 'Success');
+      this.toastr.success('Order item saved successfully!', 'Restaurent App.');
     } else {
       if (this.formData.ItemID === 0) {
-        this.toastr.warning('Please select an item.', 'Warning');
+        this.toastr.warning('Please select an item.', 'Restaurent App.');
       }
       if (this.formData.Quantity === 0) {
-        this.toastr.warning('Please enter a valid quantity.', 'Warning');
+        this.toastr.warning('Please enter a valid quantity.', 'Restaurent App.');
       }
     }
   }

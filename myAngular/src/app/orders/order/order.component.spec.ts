@@ -76,21 +76,21 @@ describe('OrderComponent', () => {
     // Falla si este componente tiene un ID > 0
     component.service.formData.CustomerID = 0;
     component.onSubmit({ valid: true } as any);
-    expect(toastrService.warning).toHaveBeenCalledWith('Please select a customer.', 'Warning' );
+    expect(toastrService.warning).toHaveBeenCalledWith('Please select a customer.', 'Restaurent App.' );
   });
 
   it('should show warning if payment method is missing', () => {
     // Falla si este componente está lleno
     component.service.formData.PMethod = '';
     component.onSubmit({ valid: true } as any);
-    expect(toastrService.warning).toHaveBeenCalledWith('Please select a payment method.','Warning');
+    expect(toastrService.warning).toHaveBeenCalledWith('Please select a payment method.','Restaurent App.');
   });
 
   it('should show warning if items is missing', () => {
     // Falla si este componente está lleno
     component.service.orderItems = [];
     component.onSubmit({ valid: true } as any);
-    expect(toastrService.warning).toHaveBeenCalledWith('Please add at least one item to the order.','Warning');
+    expect(toastrService.warning).toHaveBeenCalledWith('Please add at least one item to the order.','Restaurent App.');
   });
 
   it('should display total = 0 if no items are in the order', () => {
@@ -106,6 +106,17 @@ describe('OrderComponent', () => {
     component.updateGrandTotal();
 
     expect(component.service.formData.GTotal).toBe(100.0);
+  });
+
+  it('should update total and show success after deleting an item', () => {
+    // Falla si no coincide cantidad*precio
+    component.service.orderItems = [{ OrderItemID: 1, OrderID: 0, ItemID: 1, Quantity: 2 }];
+    component.service.selectedItems = [{ ItemID: 1, Name: 'Item1', Price: 50 }];
+    component.onDeleteOrderItem(1, 0);
+    component.updateGrandTotal();
+
+    expect(component.service.formData.GTotal).toBe(0);
+    expect(toastrService.success).toHaveBeenCalledWith('Item removed successfully', 'Restaurent App');
   });
 
   it('should generate a valid order number', () => {

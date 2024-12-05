@@ -98,6 +98,8 @@ export class OrderComponent implements OnInit {
     );
   
     this.updateGrandTotal();
+
+    this.toastr.success('Item removed successfully', 'Restaurent App');
   }
     
   updateGrandTotal() {
@@ -131,19 +133,19 @@ export class OrderComponent implements OnInit {
     // Verificar si el cliente está seleccionado
     if (this.service.formData.CustomerID === 0) {
       this.isValid = false;
-      this.toastr.warning('Please select a customer.', 'Warning');
+      this.toastr.warning('Please select a customer.', 'Restaurent App.');
     }
   
     // Verificar si el tipo de pago está seleccionado
     if (!this.service.formData.PMethod) {
       this.isValid = false;
-      this.toastr.warning('Please select a payment method.', 'Warning');
+      this.toastr.warning('Please select a payment method.', 'Restaurent App.');
     }
   
     // Verificar si hay items en el pedido
     if (this.service.orderItems.length === 0) {
       this.isValid = false;
-      this.toastr.warning('Please add at least one item to the order.', 'Warning');
+      this.toastr.warning('Please add at least one item to the order.', 'Restaurent App.');
     }
 
     return this.isValid;

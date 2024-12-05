@@ -97,7 +97,7 @@ describe('OrderItemsComponent', () => {
     const form: NgForm = { valid: true, value: component.formData } as any;
 
     component.onSubmit(form);
-    expect(toastrService.success).toHaveBeenCalledWith('Order item saved successfully!', 'Success');
+    expect(toastrService.success).toHaveBeenCalledWith('Order item saved successfully!', 'Restaurent App.');
   });
 
   it('should not submit the form when ItemID or Quantity is 0', () => {
@@ -112,7 +112,7 @@ describe('OrderItemsComponent', () => {
     const form: NgForm = { valid: true, value: component.formData } as any;
 
     component.onSubmit(form);
-    expect(toastrService.warning).toHaveBeenCalledWith('Please select an item.', 'Warning');
-    expect(toastrService.warning).toHaveBeenCalledWith('Please enter a valid quantity.', 'Warning');
+    expect(toastrService.warning).toHaveBeenCalledWith('Please select an item.', 'Restaurent App.');
+    expect(toastrService.warning).toHaveBeenCalledWith('Please enter a valid quantity.', 'Restaurent App.');
   });
 });
