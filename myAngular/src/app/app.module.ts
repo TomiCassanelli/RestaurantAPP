@@ -9,11 +9,12 @@ import { CommonModule } from '@angular/common';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ToastrModule } from 'ngx-toastr';
 
 import { OrdersComponent } from './orders/orders.component';
 import { OrderComponent } from './orders/order/order.component';
 import { OrderItemsComponent } from './orders/order-items/order-items.component';
+
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { OrderItemsComponent } from './orders/order-items/order-items.component'
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatDialogModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot()  // Aquí se configura Toastr
+    
   ],
   bootstrap: [AppComponent]
 })

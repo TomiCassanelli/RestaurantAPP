@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { OrderService } from '../order.service';
+import { OrderService } from './order/order.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { FormsModule } from "@angular/forms";
@@ -36,7 +36,7 @@ export class OrdersComponent implements OnInit {
     if (confirm('Are you sure to delete this record?')) {
       this.service.deleteOrder(id).then(res => {
         this.refreshList();
-        this.toastr.warning("Deleted Successfully", "Restaurent App.");
+        this.toastr.success("Deleted Successfully", "Restaurent App.");
       });
     }
   }

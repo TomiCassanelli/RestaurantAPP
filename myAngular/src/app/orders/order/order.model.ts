@@ -1,4 +1,4 @@
-import { OrderItem } from "./order-item.model";
+import { OrderItem } from "../order-items/order-item.model";
 
 export class Order {
   OrderID: number;

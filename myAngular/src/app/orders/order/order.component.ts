@@ -1,13 +1,13 @@
-import { CustomerService } from "../../customer.service";
-import { OrderService } from "../../order.service";
+import { CustomerService } from "../../customers/customer.service";
+import { OrderService } from "./order.service";
 import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { OrderItemsComponent } from "../order-items/order-items.component";
-import { Customer } from "../../customer.model";
+import { Customer } from "../../customers/customer.model";
 import { ToastrService } from "ngx-toastr";
 import { Router, ActivatedRoute } from "@angular/router";
-import { Item } from "../../item.model";
+import { Item } from "../../items/item.model";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from '@angular/common';
 
@@ -53,7 +53,7 @@ export class OrderComponent implements OnInit {
     }
     this.customerService
       .getCustomerList()
-      .then((res) => (this.customerList = res as Customer[]));
+      .subscribe((res) => (this.customerList = res as Customer[]));
   }
   
   ngOnDestroy() {
@@ -127,8 +127,25 @@ export class OrderComponent implements OnInit {
 
   validateForm() {
     this.isValid = true;
-    if (this.service.formData.CustomerID == 0) this.isValid = false;
-    else if (this.service.orderItems.length == 0) this.isValid = false;
+  
+    // Verificar si el cliente está seleccionado
+    if (this.service.formData.CustomerID === 0) {
+      this.isValid = false;
+      this.toastr.warning('Please select a customer.', 'Warning');
+    }
+  
+    // Verificar si el tipo de pago está seleccionado
+    if (!this.service.formData.PMethod) {
+      this.isValid = false;
+      this.toastr.warning('Please select a payment method.', 'Warning');
+    }
+  
+    // Verificar si hay items en el pedido
+    if (this.service.orderItems.length === 0) {
+      this.isValid = false;
+      this.toastr.warning('Please add at least one item to the order.', 'Warning');
+    }
+
     return this.isValid;
   }
 
