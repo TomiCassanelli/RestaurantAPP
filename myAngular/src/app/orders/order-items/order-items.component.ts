@@ -1,20 +1,24 @@
-import { Component, OnInit, Inject, OnDestroy } from "@angular/core";
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from "@angular/material/dialog";
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialogModule,
+} from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { emptyOrderItem, OrderItem } from "./order-item.model";
-import { ItemService } from "../../items/item.service";
-import { emptyItem, Item } from "../../items/item.model";
-import { NgForm } from "@angular/forms";
-import { OrderService } from "../order/order.service";
-import { FormsModule } from "@angular/forms";
+import { emptyOrderItem, OrderItem } from './order-item.model';
+import { ItemService } from '../../items/item.service';
+import { emptyItem, Item } from '../../items/item.model';
+import { NgForm } from '@angular/forms';
+import { OrderService } from '../order/order.service';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr'; // Importar ToastrService
 
 @Component({
-  selector: "app-order-items",
+  selector: 'app-order-items',
   standalone: true,
   imports: [CommonModule, FormsModule, MatDialogModule, MatButtonModule],
-  templateUrl: "./order-items.component.html",
+  templateUrl: './order-items.component.html',
 })
 export class OrderItemsComponent implements OnInit, OnDestroy {
   formData: OrderItem;
@@ -74,9 +78,8 @@ export class OrderItemsComponent implements OnInit, OnDestroy {
           this.selectedItem;
       }
       this.dialogRef.close();
-      this.toastr.success('Order item saved successfully!', 'Success'); // Alerta de éxito
+      this.toastr.success('Order item saved successfully!', 'Success');
     } else {
-      // Mostrar alertas de error dependiendo de la validación
       if (this.formData.ItemID === 0) {
         this.toastr.warning('Please select an item.', 'Warning');
       }
@@ -94,6 +97,8 @@ export class OrderItemsComponent implements OnInit, OnDestroy {
   }
 
   get totalPrice() {
-    return this.selectedItem ? this.selectedItem.Price * this.formData.Quantity : 0;
+    return this.selectedItem
+      ? this.selectedItem.Price * this.formData.Quantity
+      : 0;
   }
 }

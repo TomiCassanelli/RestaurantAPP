@@ -22,24 +22,21 @@ describe('CustomerService', () => {
   });
 
   it('should retrieve the customer list', () => {
-    const dummyCustomers = [
+    // Falla si el flush es empty o si se espera otros valores en el servicio
+    const emptyCustomers = []
+    const mockCustomers = [
       { CustomerID: 1, Name: 'John Doe' },
       { CustomerID: 2, Name: 'Jane Smith' }
     ];
 
     service.getCustomerList().subscribe(customers => {
-      expect(customers.length).toBe(2);  // Verifica que haya dos clientes
+      expect(customers.length).toBe(2);
       expect(customers[0].Name).toBe('John Doe');
       expect(customers[1].Name).toBe('Jane Smith');
     });
 
-    // Aquí simulamos la respuesta HTTP con los datos mockeados
     const req = httpMock.expectOne(`${environment.apiURL}/Customer`);
-    
-    // Verifica que la solicitud fue a la URL correcta
     expect(req.request.method).toBe('GET');
-
-    // Simulamos la respuesta del servidor
-    req.flush(dummyCustomers);
+    req.flush(mockCustomers);
   });
 });

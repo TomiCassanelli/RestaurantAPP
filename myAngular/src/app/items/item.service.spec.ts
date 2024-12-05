@@ -23,25 +23,21 @@ describe('ItemService', () => {
   });
 
   it('should retrieve the item list', () => {
-    const dummyItems: Item[] = [
+    // Falla si el flush es otra lista, o si el servicio espera otros valores
+    const emptyItems: Item[] = [];
+    const mockItems: Item[] = [
       { ItemID: 1, Name: 'Item 1', Price: 100 },
       { ItemID: 2, Name: 'Item 2', Price: 200 }
     ];
 
-    // Usamos .subscribe() en lugar de .then()
     service.getItemList().subscribe(items => {
-      expect(items.length).toBe(2);  // Verifica que el número de items es correcto
+      expect(items.length).toBe(2);
       expect(items[0].Name).toBe('Item 1');
       expect(items[1].Price).toBe(200);
     });
 
-    // Simulamos la respuesta HTTP con datos mockeados
     const req = httpMock.expectOne(`${environment.apiURL}/Item`);
-    
-    // Verificamos que la solicitud fue un GET
     expect(req.request.method).toBe('GET');
-
-    // Responderemos con los datos de prueba
-    req.flush(dummyItems);
+    req.flush(mockItems);
   });
 });

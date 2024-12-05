@@ -1,13 +1,33 @@
 <?xml version="1.0"?>
-<testsuite name="Chrome Headless 131.0.0.0 (Windows 10)" package="" timestamp="2024-12-04T18:46:03" id="0" hostname="Tomi" tests="5" errors="0" failures="0" time="0.204">
+<testsuite name="Chrome Headless 131.0.0.0 (Windows 10)" package="" timestamp="2024-12-05T16:17:12" id="0" hostname="Tomi" tests="25" errors="0" failures="0" time="0.319">
   <properties>
     <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/131.0.0.0 Safari/537.36"/>
   </properties>
-  <testcase name="AppComponent should render title" time="0.104" classname="AppComponent"/>
-  <testcase name="ItemService should retrieve the item list" time="0.01" classname="ItemService"/>
-  <testcase name="CustomerService should retrieve the customer list" time="0.006" classname="CustomerService"/>
-  <testcase name="OrderComponent should show warning if customer is not selected" time="0.078" classname="OrderComponent"/>
-  <testcase name="OrderComponent should create the component" time="0.006" classname="OrderComponent"/>
+  <testcase name="OrderComponent should not have any items when opening the new component" time="0.139" classname="OrderComponent"/>
+  <testcase name="OrderComponent should create the component" time="0.008" classname="OrderComponent"/>
+  <testcase name="OrderComponent should show success if form is ok" time="0.008" classname="OrderComponent"/>
+  <testcase name="OrderComponent should display total = 0 if no items are in the order" time="0.004" classname="OrderComponent"/>
+  <testcase name="OrderComponent should show warning if customer is not selected" time="0.005" classname="OrderComponent"/>
+  <testcase name="OrderComponent should generate a valid order number" time="0.005" classname="OrderComponent"/>
+  <testcase name="OrderComponent should show warning if payment method is missing" time="0.004" classname="OrderComponent"/>
+  <testcase name="OrderComponent should show warning if items is missing" time="0.003" classname="OrderComponent"/>
+  <testcase name="OrderComponent should update total after adding an item" time="0.004" classname="OrderComponent"/>
+  <testcase name="OrderItemsComponent should not submit the form when ItemID or Quantity is 0" time="0.047" classname="OrderItemsComponent"/>
+  <testcase name="OrderItemsComponent should submit the form when all fields are valid" time="0.009" classname="OrderItemsComponent"/>
+  <testcase name="OrderItemsComponent should initialize a new order" time="0.009" classname="OrderItemsComponent"/>
+  <testcase name="OrderItemsComponent should update totalPrice when selecting a quantity" time="0.01" classname="OrderItemsComponent"/>
+  <testcase name="OrderItemsComponent should create the component" time="0.01" classname="OrderItemsComponent"/>
+  <testcase name="OrderService should GET order by ID and return success" time="0.005" classname="OrderService"/>
+  <testcase name="OrderService should GET order list and return success" time="0.002" classname="OrderService"/>
+  <testcase name="OrderService should DELETE an order by ID and return success" time="0.002" classname="OrderService"/>
+  <testcase name="OrderService should send a POST order and return success" time="0.001" classname="OrderService"/>
+  <testcase name="AppComponent should render title" time="0.013" classname="AppComponent"/>
+  <testcase name="CustomerService should retrieve the customer list" time="0.004" classname="CustomerService"/>
+  <testcase name="OrdersComponent should create the component" time="0.015" classname="OrdersComponent"/>
+  <testcase name="OrdersComponent should navigate to /order/id when touched an order" time="0.003" classname="OrdersComponent"/>
+  <testcase name="OrdersComponent should load order list on init" time="0.003" classname="OrdersComponent"/>
+  <testcase name="OrdersComponent should show success if delete is confirmed" time="0.004" classname="OrdersComponent"/>
+  <testcase name="ItemService should retrieve the item list" time="0.002" classname="ItemService"/>
   <system-out>
     <![CDATA[
 ]]>

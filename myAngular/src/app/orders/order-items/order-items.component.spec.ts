@@ -70,6 +70,7 @@ describe('OrderItemsComponent', () => {
   });
 
   it('should initialize a new order', () => {
+    // Falla si alguno es distinto de 0 o ''
     expect(component.formData.ItemID).toBe(0);
     expect(component.formData.Quantity).toBe(0);
     expect(component.selectedItem.Price).toBe(0);
@@ -78,12 +79,14 @@ describe('OrderItemsComponent', () => {
   });
 
   it('should update totalPrice when selecting a quantity', () => {
+    // Falla si el total no es lo esperado
     component.onItemSelected({ selectedIndex: 2 });
     component.formData.Quantity = 3;
     expect(component.totalPrice).toBe(90);
   });
 
   it('should submit the form when all fields are valid', () => {
+    // Falla si Quantity o ItemID o ambas son = 0
     component.formData = {
       OrderID: 0,
       OrderItemID: 0,
@@ -98,6 +101,7 @@ describe('OrderItemsComponent', () => {
   });
 
   it('should not submit the form when ItemID or Quantity is 0', () => {
+    // Falla si Quantity o ItemID o ambas son > 0
     component.formData = {
       OrderID: 0,
       OrderItemID: 0,
