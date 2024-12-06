@@ -7,25 +7,133 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  configuration: 'Release'
+  solution: 'myAPI.sln'
 
-steps:
-- task: NuGetToolInstaller@1
+  frontPath: './myAngular'
+  backPath: './myAPI'
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
+  ConnectedServiceName: 'azure-connection'
+  # acrLoginServer: 'tcingsoft3uccacr.azurecr.io'
+  # acrName: TCIngSoft3UCCACR
+  ResourceGroupName: 'recursos-cassanelli'
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+  # Variables para APP SERVICES CONTAINER
+  # AppServicePlanLinux: 'TC-AppService'
+  # ASC-Back-QA: 'tc-employee-back-qa-asc'
+  # ASC-Front-QA: 'tc-employee-front-qa-asc'
+  # ASC-Back-PROD: 'tc-employee-back-prod-asc'
+  # ASC-Front-PROD: 'tc-employee-front-prod-asc'
+  # ASC-Base-URL: 'https://tc-employee-front-qa-asc.azurewebsites.net/'
+  # ASC_URL_QA: 'https://tc-employee-back-qa-asc.azurewebsites.net/api/Employee'
+  # ASC_URL_PROD: 'https://tc-employee-back-prod-asc.azurewebsites.net/api/Employee'
+
+  # Variables para CONTENEDORES DOCKER
+  # back-Image-Name: 'employeecrudapi-qa-back'
+  # front-Image-Name: 'employeecrudapi-qa-front'
+  # back-Image-Tag: 'latest'
+  # front-Image-Tag: 'latest'
+
+  # container-cpu-api-qa: 1 #CPUS de nuestro container de QA
+  # container-cpu-front-qa: 1 #CPUS de nuestro container de QA
+  # container-memory-api-qa: 1.5 #RAM de nuestro container de QA
+  # container-memory-front-qa: 1.5 #RAM de nuestro container de QA
+
+  # container-cpu-api-prod: 1 #CPUS de nuestro container de QA
+  # container-cpu-front-prod: 1 #CPUS de nuestro container de QA
+  # container-memory-api-prod: 1.5 #RAM de nuestro container de QA
+  # container-memory-front-prod: 1.5 #RAM de nuestro container de QA
+
+
+#---------------------------------------------------------------------------
+######                 ETAPA DE BUILD - BACK Y FRONT                  ######
+#--------------------------------------------------------------------------- 
+
+stages:
+- stage: Build_and_Test
+  displayName: 'Build & Test'
+  jobs:
+
+#---------------------------------------------------------
+######       BUILD Y ANALISIS PARA EL BACK END      ######
+#--------------------------------------------------------- 
+    # Job para el Back-End
+    - job: BuildBack
+      displayName: 'BUILD - Back'
+      steps:
+        # Restaurar paquetes NuGet
+        - task: DotNetCoreCLI@2
+          displayName: 'Restaurar Paquetes NuGet'
+          inputs:
+            command: restore
+            projects: '$(solution)'
+
+        # Ejecutar pruebas del back-end
+        - task: DotNetCoreCLI@2
+          displayName: 'Correr Pruebas Unitarias'
+          inputs:
+            command: 'test'
+            projects: '**/*.Tests.csproj'
+            arguments: '--collect:"XPlat Code Coverage"'
+
+        # Tarea de SonarCloud pre Build
+        # - task: SonarCloudPrepare@2
+        #   displayName: 'Preparar SonarCloud para Back-End'
+        #   inputs:
+        #     SonarCloud: 'SonarCloud'
+        #     organization: 'tomascassanelli02'
+        #     scannerMode: 'MSBuild'
+        #     projectKey: 'EmployeeAngular_back'
+        #     projectName: 'EmployeeAngular_back'
+
+        # Publicar resultados de cobertura del back-end
+        - task: PublishCodeCoverageResults@2
+          displayName: 'Publicar Resultados de Code Coverage'
+          inputs:
+            summaryFileLocation: '$(Agent.TempDirectory)/**/*.cobertura.xml'
+            failIfCoverageEmpty: false
+
+        # Compilar la solución del back-end
+        - task: DotNetCoreCLI@2
+          displayName: 'Build de la Solucion'
+          inputs:
+            command: 'build'
+            projects: '$(solution)'
+            arguments: '--configuration $(configuration) --output $(Build.ArtifactStagingDirectory)/api  --self-contained false'
+
+        # Analisis de SonarCloud
+        # - task: SonarCloudAnalyze@2
+        #   displayName: 'Analisis de SonarCloud del Back-End'
+        #   inputs:
+        #     jdkversion: 'JAVA_HOME_17_X64'
+
+        # # Publicar Analisis de SonarCloud
+        # - task: SonarCloudPublish@2
+        #   displayName: 'Publicar resultados de SonarCloud del Back-End'
+        #   inputs:
+        #     pollingTimeoutSec: '120'
+
+        # Publicar Back-End
+        - task: DotNetCoreCLI@2
+          displayName: 'Publicar Back-End'
+          inputs:
+            command: publish
+            publishWebProjects: true
+            arguments: '--configuration $(configuration) --output $(Build.ArtifactStagingDirectory)'
+            zipAfterPublish: true
+
+        # Publicar Artefactos del Back-End
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publicar Artefactos'
+          inputs:
+            pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            artifactName: 'drop-back'
+            publishLocation: 'Container'
+      
+      # Publicar Dockerfile de Back
+        # - task: PublishPipelineArtifact@1
+        #   displayName: 'Publicar Dockerfile'
+        #   inputs:
+        #     targetPath: '$(Build.SourcesDirectory)/docker/api/dockerfile'
+        #     artifact: 'dockerfile-back'
