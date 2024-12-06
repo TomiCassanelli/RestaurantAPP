@@ -65,12 +65,12 @@ stages:
       steps:
 
         # Instalar .NET 8 SDK
-        - task: UseDotNet@2
-          displayName: 'Instalar .NET 8 SDK'
-          inputs:
-            packageType: 'sdk'
-            version: '8.x'  # Esto instala .NET 8 SDK
-            installationPath: $(Agent.ToolsDirectory)/dotnet
+        # - task: UseDotNet@2
+        #   displayName: 'Instalar .NET 8 SDK'
+        #   inputs:
+        #     packageType: 'sdk'
+        #     version: '8.x'  # Esto instala .NET 8 SDK
+        #     installationPath: $(Agent.ToolsDirectory)/dotnet
 
         # Restaurar paquetes NuGet
         - task: DotNetCoreCLI@2
