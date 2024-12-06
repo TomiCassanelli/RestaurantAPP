@@ -63,6 +63,14 @@ stages:
     - job: BuildBack
       displayName: 'BUILD - Back'
       steps:
+
+        # Instalar .NET 8 SDK
+        - task: UseDotNet@2
+          inputs:
+            packageType: 'sdk'
+            version: '8.0.x'  # Esto instala .NET 8 SDK
+            installationPath: $(Agent.ToolsDirectory)/dotnet
+
         # Restaurar paquetes NuGet
         - task: DotNetCoreCLI@2
           displayName: 'Restaurar Paquetes NuGet'
