@@ -43,5 +43,3 @@
   * El profesor pedirá un pedirá un pequeño cambio en un test unitario para validar que:
     - [ ] El fallo de un test unitario aborta el proceso automatizado de Build y pasos subsiguientes.
     - [ ] El fallo de un test de integración aborta el proceso automatizado de Depoly y pasos subsiguientes.
-
-Asegúrense de cumplir con todos los requisitos y procedimientos establecidos para asegurar una evaluación satisfactoria. Preparen la presentación del trabajo antes del final. Cualquier mejora o agregado se tendrá en cuenta para la nota final del proyecto.
