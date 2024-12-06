@@ -8,7 +8,7 @@ pool:
 
 variables:
   configuration: 'Release'
-  solution: './myAPI.sln'
+  solution: 'myAPI/myAPI.csproj'
 
   frontPath: './myAngular'
   backPath: './myAPI'
@@ -66,6 +66,7 @@ stages:
 
         # Instalar .NET 8 SDK
         - task: UseDotNet@2
+          displayName: 'Instalar .NET 8 SDK'
           inputs:
             packageType: 'sdk'
             version: '8.x'  # Esto instala .NET 8 SDK
