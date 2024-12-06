@@ -15,7 +15,6 @@
     - [x] Repositorio en Git: La aplicación debe estar alojada en un repositorio público Git.
       - Repositorio Propio: https://github.com/TomiCassanelli/RestaurantAPP
       - Repositorio Original: https://github.com/CodAffection/Angular-7-Master-Detail-CRUD-with-Web-API
-
     - [x] La aplicación puede ser simple pero tengan en cuenta que deben poder realizarse varias pruebas tanto unitarias como de integración, por lo cual una app muy simple como un ABM no les va a servir.
     - [x] No hay ninguna restricción con respecto a tecnologías, pueden hacer o usar apps hechas con cualquier framework de front y de back, idem BD, puede ser cualquier motor.
 
