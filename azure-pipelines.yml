@@ -57,93 +57,182 @@ stages:
   jobs:
 
 #---------------------------------------------------------
-######       BUILD Y ANALISIS PARA EL BACK END      ######
+######       BUILD Y ANALISIS PARA EL BACK END      ######   FUNCIONANDO!!!
 #--------------------------------------------------------- 
-    # Job para el Back-End
-    - job: BuildBack
-      displayName: 'BUILD - Back'
+    # # Job para el Back-End
+    # - job: BuildBack
+    #   displayName: 'BUILD - Back'
+    #   steps:
+
+    #     # Restaurar paquetes NuGet
+    #     - task: DotNetCoreCLI@2
+    #       displayName: 'Restaurar Paquetes NuGet'
+    #       inputs:
+    #         command: restore
+    #         projects: '$(solution)'
+
+    #     # Ejecutar pruebas del back-end
+    #     - task: DotNetCoreCLI@2
+    #       displayName: 'Correr Pruebas Unitarias'
+    #       inputs:
+    #         command: 'test'
+    #         projects: '**/*.Tests.csproj'
+    #         arguments: '--collect:"XPlat Code Coverage"'
+
+    #     # Tarea de SonarCloud pre Build
+    #     # - task: SonarCloudPrepare@2
+    #     #   displayName: 'Preparar SonarCloud para Back-End'
+    #     #   inputs:
+    #     #     SonarCloud: 'SonarCloud'
+    #     #     organization: 'tomascassanelli02'
+    #     #     scannerMode: 'MSBuild'
+    #     #     projectKey: 'EmployeeAngular_back'
+    #     #     projectName: 'EmployeeAngular_back'
+
+    #     # Publicar resultados de cobertura del back-end
+    #     - task: PublishCodeCoverageResults@2
+    #       displayName: 'Publicar Resultados de Code Coverage'
+    #       inputs:
+    #         summaryFileLocation: '$(Agent.TempDirectory)/**/*.cobertura.xml'
+    #         failIfCoverageEmpty: false
+
+    #     # Compilar la solución del back-end
+    #     - task: DotNetCoreCLI@2
+    #       displayName: 'Build de la Solucion'
+    #       inputs:
+    #         command: 'build'
+    #         projects: '$(solution)'
+    #         arguments: '--configuration $(configuration) --output $(Build.ArtifactStagingDirectory)/api  --self-contained false'
+
+    #     # Analisis de SonarCloud
+    #     # - task: SonarCloudAnalyze@2
+    #     #   displayName: 'Analisis de SonarCloud del Back-End'
+    #     #   inputs:
+    #     #     jdkversion: 'JAVA_HOME_17_X64'
+
+    #     # # Publicar Analisis de SonarCloud
+    #     # - task: SonarCloudPublish@2
+    #     #   displayName: 'Publicar resultados de SonarCloud del Back-End'
+    #     #   inputs:
+    #     #     pollingTimeoutSec: '120'
+
+    #     # Publicar Back-End
+    #     - task: DotNetCoreCLI@2
+    #       displayName: 'Publicar Back-End'
+    #       inputs:
+    #         command: publish
+    #         publishWebProjects: true
+    #         arguments: '--configuration $(configuration) --output $(Build.ArtifactStagingDirectory)'
+    #         zipAfterPublish: true
+
+    #     # Publicar Artefactos del Back-End
+    #     - task: PublishBuildArtifacts@1
+    #       displayName: 'Publicar Artefactos'
+    #       inputs:
+    #         pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    #         artifactName: 'drop-back'
+    #         publishLocation: 'Container'
+      
+    #   # Publicar Dockerfile de Back
+    #     # - task: PublishPipelineArtifact@1
+    #     #   displayName: 'Publicar Dockerfile'
+    #     #   inputs:
+    #     #     targetPath: '$(Build.SourcesDirectory)/docker/api/dockerfile'
+    #     #     artifact: 'dockerfile-back'
+
+
+#----------------------------------------------------------
+######       BUILD Y ANALISIS PARA EL FRONT END      ######
+#---------------------------------------------------------- 
+    - job: BuildFrontend
+      displayName: 'BUILD - Front'
       steps:
-
-        # Instalar .NET 8 SDK
-        # - task: UseDotNet@2
-        #   displayName: 'Instalar .NET 8 SDK'
-        #   inputs:
-        #     packageType: 'sdk'
-        #     version: '8.x'  # Esto instala .NET 8 SDK
-        #     installationPath: $(Agent.ToolsDirectory)/dotnet
-
-        # Restaurar paquetes NuGet
-        - task: DotNetCoreCLI@2
-          displayName: 'Restaurar Paquetes NuGet'
+        # Instalar Node.js
+        - task: NodeTool@0
+          displayName: 'Instalar Node.js'
           inputs:
-            command: restore
-            projects: '$(solution)'
+            versionSpec: '18.x'
 
-        # Ejecutar pruebas del back-end
-        - task: DotNetCoreCLI@2
-          displayName: 'Correr Pruebas Unitarias'
+        # Instalar dependencias del front-end
+        - script: npm install
+          displayName: 'Instalar Dependencias'
+          workingDirectory: '$(frontPath)'
+
+        # Cachear dependencias de npm
+        - task: Cache@2
+          displayName: 'Cachear dependencias de NPM'
           inputs:
-            command: 'test'
-            projects: '**/*.Tests.csproj'
-            arguments: '--collect:"XPlat Code Coverage"'
-
+            key: 'npm | "$(Agent.OS)" | $(frontPath)/package-lock.json'
+            path: '$(frontPath)/node_modules'
+            restoreKeys: |
+              npm | "$(Agent.OS)"
+        
         # Tarea de SonarCloud pre Build
         # - task: SonarCloudPrepare@2
-        #   displayName: 'Preparar SonarCloud para Back-End'
+        #   displayName: 'Preparar SonarCloud para Front-End'
         #   inputs:
         #     SonarCloud: 'SonarCloud'
         #     organization: 'tomascassanelli02'
-        #     scannerMode: 'MSBuild'
-        #     projectKey: 'EmployeeAngular_back'
-        #     projectName: 'EmployeeAngular_back'
+        #     scannerMode: 'CLI'
+        #     configMode: manual
+        #     cliProjectKey: 'EmployeeAngular_front'
+        #     cliProjectName: 'EmployeeAngular_front'
+        #     cliSources: '$(Build.SourcesDirectory)/EmployeeCrudAngular'
+        #     extraProperties: |
+        #       sonar.projectBaseDir=$(Build.SourcesDirectory)/EmployeeCrudAngular
 
-        # Publicar resultados de cobertura del back-end
+        # Ejecutar pruebas del front-end
+        - script: npx ng test --karma-config=karma.conf.js --watch=false --browsers ChromeHeadless --code-coverage
+          displayName: 'Correr Pruebas Unitarias'
+          workingDirectory: $(frontPath)
+          continueOnError: true
+
+        # Publicar resultados de cobertura del front-end
         - task: PublishCodeCoverageResults@2
           displayName: 'Publicar Resultados de Code Coverage'
           inputs:
-            summaryFileLocation: '$(Agent.TempDirectory)/**/*.cobertura.xml'
+            summaryFileLocation: '$(frontPath)/coverage/lcov.info'
             failIfCoverageEmpty: false
+          condition: always()
 
-        # Compilar la solución del back-end
-        - task: DotNetCoreCLI@2
-          displayName: 'Build de la Solucion'
+        # Publicar resultados de pruebas unitarias del front-end
+        - task: PublishTestResults@2
+          displayName: 'Publicar Resultados de Pruebas Unitarias'
           inputs:
-            command: 'build'
-            projects: '$(solution)'
-            arguments: '--configuration $(configuration) --output $(Build.ArtifactStagingDirectory)/api  --self-contained false'
+            testResultsFormat: 'JUnit'
+            testResultsFiles: '$(frontPath)/test-results/test-results.xml'
+            failTaskOnFailedTests: true
+          condition: always()
 
-        # Analisis de SonarCloud
+        # Compilar el front-end
+        - script: npx ng build --configuration production
+          displayName: 'Build de la Solucion'
+          workingDirectory: '$(frontPath)'
+          condition: succeeded()
+        
+        # Analisis de SonarCloud del front-end
         # - task: SonarCloudAnalyze@2
-        #   displayName: 'Analisis de SonarCloud del Back-End'
+        #   displayName: 'Analisis de SonarCloud del Front-End'
         #   inputs:
         #     jdkversion: 'JAVA_HOME_17_X64'
 
-        # # Publicar Analisis de SonarCloud
+        # Publicar resultados de SonarCloud del front-end
         # - task: SonarCloudPublish@2
-        #   displayName: 'Publicar resultados de SonarCloud del Back-End'
+        #   displayName: 'Publicar resultados de SonarCloud del Front-End'
         #   inputs:
         #     pollingTimeoutSec: '120'
 
-        # Publicar Back-End
-        - task: DotNetCoreCLI@2
-          displayName: 'Publicar Back-End'
-          inputs:
-            command: publish
-            publishWebProjects: true
-            arguments: '--configuration $(configuration) --output $(Build.ArtifactStagingDirectory)'
-            zipAfterPublish: true
-
-        # Publicar Artefactos del Back-End
+        # Publicar artefactos del front-end
         - task: PublishBuildArtifacts@1
           displayName: 'Publicar Artefactos'
           inputs:
-            pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-            artifactName: 'drop-back'
+            pathtoPublish: '$(frontPath)/dist/employee-crud-angular/browser'
+            artifactName: 'drop-front'
             publishLocation: 'Container'
-      
-      # Publicar Dockerfile de Back
+
+        # Publicar Dockerfile de Front
         # - task: PublishPipelineArtifact@1
         #   displayName: 'Publicar Dockerfile'
         #   inputs:
-        #     targetPath: '$(Build.SourcesDirectory)/docker/api/dockerfile'
-        #     artifact: 'dockerfile-back'
+        #     targetPath: '$(Build.SourcesDirectory)/docker/front/dockerfile'
+        #     artifact: 'dockerfile-front'
