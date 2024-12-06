@@ -226,7 +226,7 @@ stages:
         - task: PublishBuildArtifacts@1
           displayName: 'Publicar Artefactos'
           inputs:
-            pathtoPublish: '$(frontPath)/dist/myAngular/browser'
+            pathtoPublish: '$(frontPath)/dist/my-angular/browser'
             artifactName: 'drop-front'
             publishLocation: 'Container'
 
