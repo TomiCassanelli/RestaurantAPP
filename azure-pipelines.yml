@@ -59,86 +59,86 @@ stages:
 #---------------------------------------------------------
 ######       BUILD Y ANALISIS PARA EL BACK END      ######   FUNCIONANDO!!!
 #--------------------------------------------------------- 
-    # # Job para el Back-End
-    # - job: BuildBack
-    #   displayName: 'BUILD - Back'
-    #   steps:
+    # Job para el Back-End
+    - job: BuildBack
+      displayName: 'BUILD - Back'
+      steps:
 
-    #     # Restaurar paquetes NuGet
-    #     - task: DotNetCoreCLI@2
-    #       displayName: 'Restaurar Paquetes NuGet'
-    #       inputs:
-    #         command: restore
-    #         projects: '$(solution)'
+        # Restaurar paquetes NuGet
+        - task: DotNetCoreCLI@2
+          displayName: 'Restaurar Paquetes NuGet'
+          inputs:
+            command: restore
+            projects: '$(solution)'
 
-    #     # Ejecutar pruebas del back-end
-    #     - task: DotNetCoreCLI@2
-    #       displayName: 'Correr Pruebas Unitarias'
-    #       inputs:
-    #         command: 'test'
-    #         projects: '**/*.Tests.csproj'
-    #         arguments: '--collect:"XPlat Code Coverage"'
+        # Ejecutar pruebas del back-end
+        - task: DotNetCoreCLI@2
+          displayName: 'Correr Pruebas Unitarias'
+          inputs:
+            command: 'test'
+            projects: '**/*.Tests.csproj'
+            arguments: '--collect:"XPlat Code Coverage"'
 
-    #     # Tarea de SonarCloud pre Build
-    #     # - task: SonarCloudPrepare@2
-    #     #   displayName: 'Preparar SonarCloud para Back-End'
-    #     #   inputs:
-    #     #     SonarCloud: 'SonarCloud'
-    #     #     organization: 'tomascassanelli02'
-    #     #     scannerMode: 'MSBuild'
-    #     #     projectKey: 'EmployeeAngular_back'
-    #     #     projectName: 'EmployeeAngular_back'
+        # Tarea de SonarCloud pre Build
+        # - task: SonarCloudPrepare@2
+        #   displayName: 'Preparar SonarCloud para Back-End'
+        #   inputs:
+        #     SonarCloud: 'SonarCloud'
+        #     organization: 'tomascassanelli02'
+        #     scannerMode: 'MSBuild'
+        #     projectKey: 'EmployeeAngular_back'
+        #     projectName: 'EmployeeAngular_back'
 
-    #     # Publicar resultados de cobertura del back-end
-    #     - task: PublishCodeCoverageResults@2
-    #       displayName: 'Publicar Resultados de Code Coverage'
-    #       inputs:
-    #         summaryFileLocation: '$(Agent.TempDirectory)/**/*.cobertura.xml'
-    #         failIfCoverageEmpty: false
+        # Publicar resultados de cobertura del back-end
+        - task: PublishCodeCoverageResults@2
+          displayName: 'Publicar Resultados de Code Coverage'
+          inputs:
+            summaryFileLocation: '$(Agent.TempDirectory)/**/*.cobertura.xml'
+            failIfCoverageEmpty: false
 
-    #     # Compilar la solución del back-end
-    #     - task: DotNetCoreCLI@2
-    #       displayName: 'Build de la Solucion'
-    #       inputs:
-    #         command: 'build'
-    #         projects: '$(solution)'
-    #         arguments: '--configuration $(configuration) --output $(Build.ArtifactStagingDirectory)/api  --self-contained false'
+        # Compilar la solución del back-end
+        - task: DotNetCoreCLI@2
+          displayName: 'Build de la Solucion'
+          inputs:
+            command: 'build'
+            projects: '$(solution)'
+            arguments: '--configuration $(configuration) --output $(Build.ArtifactStagingDirectory)/api  --self-contained false'
 
-    #     # Analisis de SonarCloud
-    #     # - task: SonarCloudAnalyze@2
-    #     #   displayName: 'Analisis de SonarCloud del Back-End'
-    #     #   inputs:
-    #     #     jdkversion: 'JAVA_HOME_17_X64'
+        # Analisis de SonarCloud
+        # - task: SonarCloudAnalyze@2
+        #   displayName: 'Analisis de SonarCloud del Back-End'
+        #   inputs:
+        #     jdkversion: 'JAVA_HOME_17_X64'
 
-    #     # # Publicar Analisis de SonarCloud
-    #     # - task: SonarCloudPublish@2
-    #     #   displayName: 'Publicar resultados de SonarCloud del Back-End'
-    #     #   inputs:
-    #     #     pollingTimeoutSec: '120'
+        # # Publicar Analisis de SonarCloud
+        # - task: SonarCloudPublish@2
+        #   displayName: 'Publicar resultados de SonarCloud del Back-End'
+        #   inputs:
+        #     pollingTimeoutSec: '120'
 
-    #     # Publicar Back-End
-    #     - task: DotNetCoreCLI@2
-    #       displayName: 'Publicar Back-End'
-    #       inputs:
-    #         command: publish
-    #         publishWebProjects: true
-    #         arguments: '--configuration $(configuration) --output $(Build.ArtifactStagingDirectory)'
-    #         zipAfterPublish: true
+        # Publicar Back-End
+        - task: DotNetCoreCLI@2
+          displayName: 'Publicar Back-End'
+          inputs:
+            command: publish
+            publishWebProjects: true
+            arguments: '--configuration $(configuration) --output $(Build.ArtifactStagingDirectory)'
+            zipAfterPublish: true
 
-    #     # Publicar Artefactos del Back-End
-    #     - task: PublishBuildArtifacts@1
-    #       displayName: 'Publicar Artefactos'
-    #       inputs:
-    #         pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    #         artifactName: 'drop-back'
-    #         publishLocation: 'Container'
+        # Publicar Artefactos del Back-End
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publicar Artefactos'
+          inputs:
+            pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            artifactName: 'drop-back'
+            publishLocation: 'Container'
       
-    #   # Publicar Dockerfile de Back
-    #     # - task: PublishPipelineArtifact@1
-    #     #   displayName: 'Publicar Dockerfile'
-    #     #   inputs:
-    #     #     targetPath: '$(Build.SourcesDirectory)/docker/api/dockerfile'
-    #     #     artifact: 'dockerfile-back'
+      # Publicar Dockerfile de Back
+        # - task: PublishPipelineArtifact@1
+        #   displayName: 'Publicar Dockerfile'
+        #   inputs:
+        #     targetPath: '$(Build.SourcesDirectory)/docker/api/dockerfile'
+        #     artifact: 'dockerfile-back'
 
 
 #----------------------------------------------------------
